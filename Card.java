@@ -1,6 +1,5 @@
 //Card.java
 //Card class represents a playing card
-//test
 
 public class Card {
     private final String face; // face of card ("Ace", "Deuce", ...)
