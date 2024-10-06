@@ -7,7 +7,7 @@ public class DeckOfCardsTest {
         DeckOfCards myDeckOfCards = new DeckOfCards();
         myDeckOfCards.shuffle(); // place Cards to random order
 
-        myDeckOfCards.game();
+        myDeckOfCards.game(); // plays through a single game
 
     } // end of main method
 } // end of DeckOfCardsTest class

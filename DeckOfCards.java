@@ -11,8 +11,8 @@ public class DeckOfCards {
 
     private Card[] deck = new Card[NUMBER_OF_CARDS]; // Card references
     private int currentCard = 0; // index of next Card to be dealt (0 - 51)
-    private int dealerValue = 0;
-    private int playerValue = 0;
+    private int dealerValue = 0; // dealer's total hand value
+    private int playerValue = 0; // player's total hand value
     private String dealerHand = "Dealer's Hand: ";
     private String playerHand = "Player's Hand: ";
 
@@ -57,29 +57,32 @@ public class DeckOfCards {
         } //end if/else
     } // end of deal Card method
 
+    //deals a card to the player
     public void dealToPlayer() {
         dealCard();
-        playerValue += deck[currentCard].getValue();
-        if (currentCard == 1) {
+        playerValue += deck[currentCard].getValue(); // adds up player's total hand
+        if (currentCard == 1) { // prints first card in player's hand
             playerHand = playerHand.concat(deck[currentCard].toString());
         }
-        else {
+        else { // adds spaces between previous card and new card
             playerHand = playerHand.concat("    " + deck[currentCard].toString());
-        }
-    }
+        } // end if/else
+    } // end of dealToPlayer method
 
+    //deals card to the dealer
     public void dealToDealer() {
         dealCard();
-        dealerValue += deck[currentCard].getValue();
-        if (currentCard == 4) {
+        dealerValue += deck[currentCard].getValue(); // add up dealer's total hand
+        if (currentCard == 4) { // prints the dealer's unknown card
             dealerHand = dealerHand.concat("     Unknown_Card");
         }
-        else {
+        else { // prints known cards
             dealerHand = dealerHand.concat(currentCard == 2 ? deck[currentCard].toString()
                 : "    " + deck[currentCard].toString());
-        }
-    }
+        } // end if/else
+    } // end of dealToDealer
 
+    // deals out the first two cards for the player and dealer
     public void initialDeal() {
         dealToPlayer();
         dealToDealer();
@@ -87,8 +90,9 @@ public class DeckOfCards {
         dealToDealer();
         System.out.println(playerHand);
         System.out.println(dealerHand);
-    }
+    } // end of intialDeal
 
+    // checks player's hand while they hit/stand
     public Boolean cardCheck() {
         if (playerValue > 21) {
             System.out.println("\nBust!");
@@ -100,24 +104,31 @@ public class DeckOfCards {
             if (enter.equals("")) {
                 return false;
             }
-        }
+        } // end of if/else
+
         return true;
     }
 
+    //goes throungh the dealer's play
     public void dealerPlay() {
+        //reveals the dealer's unknown card
         String regex = "Unknown_Card";
         dealerHand = dealerHand.replaceAll(regex, deck[4].toString());
         System.out.println(dealerHand);
-        int drawCount = 0;
+        int drawCount = 0;// tracks how many cards the dealer drew
+
         //dealer will take cards as long as value is less than 17
         while (dealerValue < 17) { 
             dealToDealer();
             drawCount++;
-        }
+        } //end while loop
+
         System.out.print("\nThe Dealer took " + drawCount);
         System.out.println(drawCount == 1 ? " card.\n" : " cards.\n");
     }
 
+
+    // compares the player's and dealer's total after each have finished their play
     public void finalCheck() {
         System.out.println("\nPlayer's Total: " + playerValue);
         System.out.println("Dealer's Total: " + dealerValue);
@@ -129,16 +140,21 @@ public class DeckOfCards {
         }
         else {
             System.out.println("\nYou Lose!");
-        }
-    }
+        } //end of if/else
+    } // end of finalCheck method
 
+
+    // plays through a single game 
     public void game() {
         //intro method
+
         initialDeal();
+
         while (cardCheck()) {
             System.out.print("\nHit or Stand (h/s) ");
             String response = input.nextLine();
             System.out.println();
+
             if (response.equalsIgnoreCase("h")) {
                 dealToPlayer();
                 System.out.println(playerHand);
@@ -153,13 +169,15 @@ public class DeckOfCards {
             }
             else {
                 System.out.println("Your response is invalid. Please try again.");
-            }
-        }
+            } // end of if/else
+        } // end while loop
+        
+        // executes if player doesn't go bust
         if (playerValue <= 21) {
             dealerPlay();
             System.out.println(playerHand);
             System.out.println(dealerHand);
             finalCheck();
-        }
+        } // end of if
     }
 }
