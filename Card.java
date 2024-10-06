@@ -11,8 +11,22 @@ public class Card {
         this.suit = cardSuit; // initialize suit of card
     } // end of Card Constructor
 
+    public int getValue() {
+        switch (face) {
+            case "Ace":
+                return 1;
+            case "King":
+            case "Queen":
+            case "Jack":
+                return 10;
+            default:
+                return Integer.parseInt(face);
+        }
+    }
+
     //return String representation of Card
     public String toString() {
         return face + " of " + suit;
     } // end of toString method
+
 } //end class Card
