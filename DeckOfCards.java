@@ -17,12 +17,12 @@ public class DeckOfCards {
     private String playerHand = "Player's Hand: ";
 
     // introduction method
-    public static void intro() {
+    public void intro() {
         System.out.println("Blackjack Game");
         System.out.println("Welcome to Whatcom Community College Casino: WCCC");
         System.out.println("Rules: Players are each dealt 2 cards and given the option to Hit, or Stand.");
-        System.out.println("Hit (another card is dealt)";
-        System.out.println("Stand (stay with current hand)";
+        System.out.println("Hit, (another card is dealt)");
+        System.out.println("Stand (stay with current hand)");
         System.out.println("The player closest to 21 without going over 21 wins.");
         System.out.println("10, Jack, Queen, and King's all have a value of 10. Ace has a value of 11.");
         //System.out.println("uncomment and insert additional instructions");
