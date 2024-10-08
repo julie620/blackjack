@@ -12,6 +12,6 @@ public class DeckOfCardsTest {
             myDeckOfCards.game(); // plays through a single game
             playCount++;
         }
-
     } // end of main method
+
 } // end of DeckOfCardsTest class
