@@ -27,7 +27,7 @@ public class DeckOfCards {
     public void intro() {
         System.out.println("Welcome to Whatcom Community College Casino: WCCC");
         System.out.println("");
-        System.out.println("21");
+        System.out.println("Blackjack");
         System.out.println("Rules: Players are each dealt 2 cards and given the option to Hit, or Stand (h/s).");
         System.out.println("(h) Hit (another card is dealt)");
         System.out.println("(s) Stand (stay with current hand)");
