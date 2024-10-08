@@ -25,9 +25,9 @@ public class DeckOfCards {
 
     // introduction method
     public void intro() {
-        System.out.println("Blackjack Game");
-        System.out.println("");
         System.out.println("Welcome to Whatcom Community College Casino: WCCC");
+        System.out.println("");
+        System.out.println("21");
         System.out.println("Rules: Players are each dealt 2 cards and given the option to Hit, or Stand (h/s).");
         System.out.println("(h) Hit (another card is dealt)");
         System.out.println("(s) Stand (stay with current hand)");
@@ -175,7 +175,8 @@ public class DeckOfCards {
         initialDeal();
 
         while (cardCheck()) {
-            System.out.print("\nHit or Stand (h/s) ");
+            System.out.printf("\nCurrent Hand Value: %s%n", +playerValue);
+            System.out.print("Hit or Stand (h/s) ");
             String response = input.nextLine();
             System.out.println();
 
@@ -223,7 +224,7 @@ public class DeckOfCards {
         } else {
             System.out.println("Game Over");
         }
-    }
+    } // end playAgain method
 
     // reset values for new game
     public void resetGame() {
@@ -232,4 +233,4 @@ public class DeckOfCards {
         playerHand = "Player's Hand: ";
         dealerHand = "Dealer's Hand: ";
     }
-}
+} // end public class DeckOfCards
