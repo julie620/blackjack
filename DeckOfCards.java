@@ -32,7 +32,7 @@ public class DeckOfCards {
         System.out.println("(h) Hit (another card is dealt)");
         System.out.println("(s) Stand (stay with current hand)");
         System.out.println("The player closest to 21 without going over 21 wins.");
-        System.out.println("10, Jack, Queen, and King's all have a value of 10. Ace has a value of 1.");
+        System.out.println("10, Jack, Queen, and King's all have a value of 10. Ace has a value of 1 or 11.");
         System.out.println("You will start with 10 credits.");
         System.out.println("You can win 1 credit by beating the dealer");
         System.out.println("You can win 2 credits by getting a total of 21.");
@@ -115,25 +115,35 @@ public class DeckOfCards {
 
     // checks player's hand while they hit/stand
     public Boolean cardCheck() {
-        if (playerValue > 21) {
+        playerValue = aceCheck(playerHand, playerValue);
+        if (playerValue > 21) { // will stop game if player goes bust
+            System.out.println("\nPlayer's Total: " + playerValue);
             System.out.println("\nBust!");
+            playerCredits -= 1; //Subtracts 1 cresit for going bust
             printPlayerCredits(); // print the players credits
-            resetGame(); // reset the values for new game
-            playAgain(); // ask if player would like too play again
+            System.out.println();
             return false;
-        } else if (playerValue == 21) {
-            System.out.println("\nYou have 21! Press [Enter] to see the dealer's play.");
-            String enter = input.nextLine();
-            if (enter.equals("")) {
-                playerCredits += 2; // Add 2 credits for a 21
-                printPlayerCredits(); // print the players credits
-                resetGame(); // reset the values for new game
-                playAgain(); // ask if player would like too play again
-                return false;
+        } else if (playerValue == 21) { // will notify the player if there hand equals 21
+            while (true) {
+                System.out.println("\nYou have 21! Press [Enter] to see the dealer's play.");
+                String enter = input.nextLine();
+                if (enter.equals("")) {
+                    break;
+                } else {
+                    System.out.println("Invalid response please try again");
+                }
             }
+            return false;
         } // end of if/else
-
         return true;
+    } // end of cardCheck
+
+    // checks if an ace card will make hand equal 21
+    public int aceCheck(String hand, int value) {
+        if (hand.contains("Ace") && value == 11) {
+            value = 21;
+        }
+        return value;
     }
 
     // goes throungh the dealer's play
@@ -142,17 +152,19 @@ public class DeckOfCards {
         String regex = "Unknown_Card";
         dealerHand = dealerHand.replaceAll(regex, deck[4].toString());
         System.out.println(dealerHand);
+        aceCheck(dealerHand, dealerValue);
         int drawCount = 0;// tracks how many cards the dealer drew
 
         // dealer will take cards as long as value is less than 17
         while (dealerValue < 17) {
             dealToDealer();
             drawCount++;
+            aceCheck(dealerHand, dealerValue);
         } // end while loop
 
         System.out.print("\nThe Dealer took " + drawCount);
         System.out.println(drawCount == 1 ? " card.\n" : " cards.\n");
-    }
+    } // end of dealerPlay
 
     // compares the player's and dealer's total after each have finished their play
     public void finalCheck() {
@@ -162,6 +174,9 @@ public class DeckOfCards {
             System.out.println("\nIt's a draw!");
         } else if (playerValue > dealerValue || dealerValue > 21) {
             System.out.println("\nYou win!");
+            if (playerValue == 21) {
+                playerCredits += 2;
+            }
             playerCredits += 1; // Add 1 credit for a win
         } else {
             System.out.println("\nYou Lose!");
@@ -171,9 +186,9 @@ public class DeckOfCards {
 
     // plays through a single game
     public void game() {
-
         initialDeal();
 
+        // will let the player hit or stand as long as they are less then 21
         while (cardCheck()) {
             System.out.print("\nHit or Stand (h/s) ");
             String response = input.nextLine();
@@ -184,11 +199,16 @@ public class DeckOfCards {
                 System.out.println(playerHand);
             } else if (response.equalsIgnoreCase("s")) {
                 System.out.println("Your total is: " + playerValue);
-                System.out.println("\nPress [Enter] to see the dealer's play.");
-                String enter = input.nextLine();
-                if (enter.equals("")) {
-                    break;
+                while (true) {
+                    System.out.println("\nPress [Enter] to see the dealer's play.");
+                    String enter = input.nextLine();
+                    if (enter.equals("")) {
+                        break;
+                    } else {
+                        System.out.println("Invalid response please. Please try again.");
+                    }
                 }
+                break;
             } else {
                 System.out.println("Your response is invalid. Please try again.");
             } // end of if/else
@@ -202,28 +222,36 @@ public class DeckOfCards {
             finalCheck();
             printPlayerCredits();
             System.out.println("");
-            resetGame();
-            playAgain();
         } // end of if
-    }
+    } // end of game
 
     // prompt the user to play again if remaining credits
-    public void playAgain() {
+    public Boolean playAgain(int playCount) {
+        Boolean playing = true;
         if (playerCredits > 0) {
-            System.out.println("Would you like to play again? (y/n): ");
-            String again = input.nextLine();
+            while (true) {
+                System.out.print(playCount > 0 ? "Would you like to play again? (y/n): " 
+                    : "Are you ready to start the game? (y/n): ");
+                String again = input.nextLine();
 
-            if (again.equalsIgnoreCase("y")) {
-                System.out.println("");
-                shuffle(); // re-shuffle
-                game(); // play another hand
-            } else {
-                System.out.println("Thank you for playing.");
+                if (again.equalsIgnoreCase("y")) {
+                    System.out.println("");
+                    resetGame();
+                    break;
+                } else if (again.equalsIgnoreCase("n")) {
+                    System.out.println("Thank you for playing.");
+                    playing = false;
+                    break;
+                } else {
+                    System.out.println("Invalid response. Please try again.");
+                }
             }
         } else {
             System.out.println("Game Over");
+            playing = false;
         }
-    }
+        return playing;
+    } // end of playAgain
 
     // reset values for new game
     public void resetGame() {
@@ -231,5 +259,5 @@ public class DeckOfCards {
         dealerValue = 0;
         playerHand = "Player's Hand: ";
         dealerHand = "Dealer's Hand: ";
-    }
-}
+    } // end of resetGame
+} // end of DeckofCards Class
