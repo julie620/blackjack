@@ -18,10 +18,11 @@ public class DeckOfCards {
     private String dealerHand = "Dealer's Hand: ";
     private String playerHand = "Player's Hand: ";
 
+    // print the players credits
     public int printPlayerCredits() {
         System.out.println("Credits: " + playerCredits);
         return playerCredits;
-    }
+    } // end printPlayerCredits method
 
     // introduction method
     public void intro() {
